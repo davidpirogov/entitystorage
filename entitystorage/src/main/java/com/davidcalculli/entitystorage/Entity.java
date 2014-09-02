@@ -6,10 +6,10 @@ import java.util.HashMap;
 public class Entity implements Serializable {
 
 	private static final long serialVersionUID = 7734862533747155907L;
-	private HashMap<String, Object> elements;
+	protected HashMap<String, Entity> elements;
 	
 	public Entity() {
-		 elements = new HashMap<String, Object>();
+		 elements = new HashMap<String, Entity>();
 	}
 	
 	/**
@@ -17,7 +17,7 @@ public class Entity implements Serializable {
 	 * @param key A unique descriptor or ID of the content
 	 * @param content The content object that can be serialised
 	 */
-	public void put(String key, Object content) {
+	public void put(String key, Entity content) {
 		this.elements.put(key, content);		
 	}
 	
@@ -26,7 +26,7 @@ public class Entity implements Serializable {
 	 * @param key
 	 * @return
 	 */
-	public Object get(String key) {
+	public Entity get(String key) {
 		return this.elements.get(key);
 	}
 }

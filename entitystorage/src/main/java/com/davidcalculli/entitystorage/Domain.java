@@ -10,6 +10,21 @@ import java.util.HashMap;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 
+
+/**
+ *  TODO
+ *  Re-architect Domain into an interface that has a synchronise function
+ *  and ensure that we can create domains (with associated Domain Options) 
+ *  such as:
+ * 	 	General Domain (Key-Value Structure)
+ * 			- HashMap Structure
+ * 			- Flat-file Storage
+ * 			- Raw or Base64 encoded byte stream
+ * 		Minimal Domain (Value Structure)
+ * 			- Array Structure
+ * 			- Flat-file Storage
+ * 			- Base64 or Protobuf(?) byte stream 		
+ */
 public class Domain {
 	
 	protected String domainName;
@@ -98,6 +113,7 @@ public class Domain {
 
 	/**
 	 * Returns the readable size of this domain file
+	 * TODO - move this to a utils class
 	 * @return
 	 */
 	public String getReadableSizeInBytes() {
