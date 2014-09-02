@@ -11,7 +11,7 @@ public class Init {
 
 	public static void main(String[] args) throws IOException {
 		
-		String content = "Our extensive 25 years information management expertise in the public sector and regulated industries is seriously lacking in the SharePoint domain. This same extensive experience has recently produced ECM for Small Agencies which is one step towards providing a pre-configured or packaged information management solution. The long term vision of SharePoint Governance includes creating a pre-configured solution to map of out of the box SharePoint content to a pre-configured version of Objective (using a model similar to ECM for small agencies) to reduce the overhead involved in implementing a governed SharePoint solution. While competitors such as RecordPoint, Automated Intelligence and Gimmal provide tools to allow customers or consultants to build a tailored solution to manage their information, Objective will leverage its industry experience to provide pre-packaged solutions which solve specific business problems and use information management best practices gained from our industry experience.";
+		String content = "Our extensive experience";
 		
 		Domain domain = new Domain("data/content.world");
 		
