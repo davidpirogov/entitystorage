@@ -1,166 +1,47 @@
 package com.davidcalculli.entitystorage.init;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import com.davidcalculli.entitystorage.Domain;
 import com.davidcalculli.entitystorage.Entity;
+import com.davidcalculli.entitystorage.ComplexEntity;
 import com.davidcalculli.entitystorage.StringEntity;
 
 public class Init {
-
-	private static String[] words = new String[] {
-			"cogitation",
-			"unwilful",
-			"intendment",
-			"flexibleness",
-			"intervertebrally",
-			"magi",
-			"phalanx",
-			"pipsqueak",
-			"bosnian",
-			"martinmas",
-			"vimana",
-			"agitational",
-			"hyperorthognathous",
-			"hierarchize",
-			"cheshunt",
-			"trachea",
-			"consternate",
-			"deep",
-			"calcimined",
-			"sublunated",
-			"sorer",
-			"interlaminar",
-			"polemicist",
-			"overassertive",
-			"endolymph",
-			"dichloride",
-			"simultaneously",
-			"prerejoicing",
-			"degradedness",
-			"hexameron",
-			"consecratedness",
-			"nondisciplining",
-			"bimorph",
-			"planck",
-			"somewise",
-			"milfoil",
-			"postprandially",
-			"isolate",
-			"pseudoerotic",
-			"fishiness",
-			"benefiter",
-			"kola",
-			"socialist",
-			"frenchify",
-			"unglorifying",
-			"innovating",
-			"sotol",
-			"downcastly",
-			"wkly",
-			"unabolished",
-			"cogitation",
-			"unwilful",
-			"intendment",
-			"flexibleness",
-			"intervertebrally",
-			"magi",
-			"phalanx",
-			"pipsqueak",
-			"bosnian",
-			"martinmas",
-			"vimana",
-			"agitational",
-			"hyperorthognathous",
-			"hierarchize",
-			"cheshunt",
-			"trachea",
-			"consternate",
-			"deep",
-			"calcimined",
-			"sublunated",
-			"sorer",
-			"interlaminar",
-			"polemicist",
-			"overassertive",
-			"endolymph",
-			"dichloride",
-			"simultaneously",
-			"prerejoicing",
-			"degradedness",
-			"hexameron",
-			"consecratedness",
-			"nondisciplining",
-			"bimorph",
-			"planck",
-			"somewise",
-			"milfoil",
-			"postprandially",
-			"isolate",
-			"pseudoerotic",
-			"fishiness",
-			"benefiter",
-			"kola",
-			"socialist",
-			"frenchify",
-			"unglorifying",
-			"innovating",
-			"sotol",
-			"downcastly",
-			"wkly",
-			"unabolished"
-	};
 	
 	public static void main(String[] args) throws IOException {
 		
-		Domain domain = new Domain("data/content.world");
+		InitHelper.runTest("data/d.1.alpha", 10);
+		InitHelper.runTest("data/d.2.alpha", 100);
+		InitHelper.runTest("data/d.3.alpha", 1000);
+		InitHelper.runTest("data/d.4.alpha", 10000);
 		
-		for(int i = 0; i < 100; i++) {
-			
-			Entity e = new Entity();
-			
-			for(int j = 0; j < 1000; j++) {
-				
-				StringEntity stringEntity = new StringEntity(generateRandomString(i + 1, " "));
-				
-				e.put("ENTITY_" + i + "_" + j + "_KEY", stringEntity);
-			}
-			
-			
-			domain.register("ENTITY_" + i, e);
+		
+		
+		/*
+		Domain d2 = new Domain("data/d.alpha");
+		System.out.println("D2 Domain Location: " + d2.getLocation());
+		System.out.println("D2 Domain Records: " + d2.getRecordSize());
+		System.out.println("D2 Domain Size: " + d2.getReadableSizeInBytes());
+		
+		Set<String> keys = d2.getRecordKeys();
+		Iterator<String> iter = keys.iterator();
+		
+		while(iter.hasNext()) {
+			String currentKey = iter.next();			
+			Entity e = d2.getRecord(currentKey);
+			InitHelper.printEntity(currentKey, e, 0, "    ");
+			System.out.println("------------------------");
 		}
+		*/
 		
-		domain.synchronise();
-		
-		System.out.println("Domain Location: " + domain.getLocation());
-		System.out.println("Domain Records: " + domain.getRecordSize());
-		System.out.println("Domain Size: " + domain.getReadableSizeInBytes());
 		
 	}
-	
-	/**
-	 * Generates a string of random words with the supplied separator
-	 * @param wordsLength
-	 * @return
-	 */
-	public static String generateRandomString(int wordsLength, String separator) {
-		
-		StringBuilder sb = new StringBuilder();
-		Random rand = new Random();
-		
-		for(int i = 0; i < wordsLength; i++) {
-			int randomWord = rand.nextInt(words.length);
-			
-			if(i != 0) {
-				sb.append(separator);
-			}
-			
-			sb.append(words[randomWord]);
-		}
-		
-		
-		return sb.toString();
-	}
-
 }

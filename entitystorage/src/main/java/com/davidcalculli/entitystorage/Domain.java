@@ -1,14 +1,18 @@
 package com.davidcalculli.entitystorage;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.SerializationUtils;
 
 
 /**
@@ -37,7 +41,29 @@ public class Domain {
 	public Domain(String domainName) {
 		this.domainName = domainName;
 		this.entities = new HashMap<String, Entity>();
+		loadFromFile();
 	}	
+	
+	/**
+	 * Loads the domain contents and replace the domain contents 
+	 */
+	protected void loadFromFile() {
+		if(this.getDomainFile().exists()) {
+			
+			try {
+				
+				HashMap<String, Entity> attemptedEntityList = (HashMap<String, Entity>)SerializationUtils.deserialize(FileUtils.readFileToByteArray(this.getDomainFile()));
+				
+				if(attemptedEntityList != null) {
+					this.entities = attemptedEntityList;
+				}
+			}
+			catch(Exception ex) {
+				// TODO - use logging
+				ex.printStackTrace();
+			}
+		}		
+	}
 	
 	
 	/**
@@ -45,7 +71,7 @@ public class Domain {
 	 * @return
 	 */
 	private String getFileName() {
-		return String.format("%s.data", this.domainName);		
+		return String.format("%s.domain", this.domainName);		
 	}
 	
 	/**
@@ -84,30 +110,12 @@ public class Domain {
 
 
 	/**
-	 * Syncronises our changes with the non-volatile storage
+	 * Synchronises our changes with the non-volatile storage
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unused")
 	public void synchronise() throws IOException {
-		
-		// Serialise our hash map into bytes
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(entities);
-		baos.flush();
-		
-		String entitiesContents = baos.toString();
-		baos.close();
-		
-		// Finally, write the contents of our entity list to the file system
-		// TODO: Add config items for type of domain
-		if(false) {
-			FileUtils.writeByteArrayToFile(this.getDomainFile(), Base64.encodeBase64(entitiesContents.getBytes("UTF-8")));
-		}
-		else {
-			FileUtils.writeStringToFile(this.getDomainFile(), entitiesContents, "UTF-8");
-		}
-
+		// Write the contents of our entity list to the file system
+		FileUtils.writeByteArrayToFile(this.getDomainFile(), SerializationUtils.serialize(this.entities));
 	}
 
 
@@ -118,5 +126,26 @@ public class Domain {
 	 */
 	public String getReadableSizeInBytes() {
 		return FileUtils.byteCountToDisplaySize(this.getDomainFile().length());
+	}
+
+	/**
+	 * Returns all the keys of the first level records within this domain
+	 * @return
+	 */
+	public Set<String> getRecordKeys() {
+		return this.entities.keySet();
+	}
+
+	/**
+	 * Returns the record that is described by the specified key
+	 * @param currentKey
+	 * @return The record described by the key or {@link Null}
+	 */
+	public Entity getRecord(String currentKey) {
+		if(this.entities.containsKey(currentKey)) {
+			return this.entities.get(currentKey);
+		}
+		
+		return null;
 	}
 }

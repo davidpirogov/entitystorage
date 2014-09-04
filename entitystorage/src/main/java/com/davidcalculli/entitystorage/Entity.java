@@ -2,6 +2,7 @@ package com.davidcalculli.entitystorage;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Entity implements Serializable {
 
@@ -13,20 +14,57 @@ public class Entity implements Serializable {
 	}
 	
 	/**
-	 * Puts the key and content into the current entity
-	 * @param key A unique descriptor or ID of the content
-	 * @param content The content object that can be serialised
+	 * Gets whether or not this Entity has any children
+	 * @return A {@link true} if there are registered children Entities
 	 */
-	public void put(String key, Entity content) {
-		this.elements.put(key, content);		
+	public boolean hasChildren() {
+		return (this.elements.size() > 0);
 	}
 	
 	/**
-	 * Gets the object that is identified by the supplied key
-	 * @param key
-	 * @return
+	 * Gets the set of keys that represent the first level children
+	 * @return A {@link Set<String>} of names of children keys or {@link Null} if there are no children
 	 */
-	public Entity get(String key) {
-		return this.elements.get(key);
+	public Set<String> getChildrenKeys() {
+		if(this.hasChildren()) {
+			return this.elements.keySet();
+		}		
+		return null;
+	}
+	
+	/**
+	 * Gets a child entity element based on a supplied key
+	 * @param childKey The name of the child entity
+	 * @return The child {@link Entity} or {@link Null} if an invalid key was supplied
+	 */
+	public Entity getChild(String childKey) {
+		if(this.elements.containsKey(childKey)) {
+			return this.elements.get(childKey);
+		}
+		return null;
+	}
+	
+	/**
+	 * Adds a child entity to this entity based on a supplied key. If the key already exists, the value is overwritten
+	 * @param childKey The unique name of the child entity
+	 * @param child The unique value of the child of type {@link Entity}
+	 * @return The child {@link Entity} is passed back to the caller 
+	 */
+	public Entity addChild(String childKey, Entity child) {
+		if(this.elements.containsKey(childKey)) {
+			this.removeChild(childKey);
+		}
+		this.elements.put(childKey, child);
+		return this.getChild(childKey);
+	}
+	
+	/**
+	 * Removes a child (and its children) from this entity and dereferences them. 
+	 * @param childKey The child key of the child object
+	 */
+	public void removeChild(String childKey) {
+		if(this.elements.containsKey(childKey)) {
+			this.elements.remove(childKey);
+		}
 	}
 }
