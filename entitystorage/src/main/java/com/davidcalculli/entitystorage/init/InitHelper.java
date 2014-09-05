@@ -178,7 +178,6 @@ public class InitHelper {
 				e.addChild("ENTITY_" + i + "_" + j + "_KEY", stringEntity);
 			}
 			
-			
 			domain.register("ENTITY_" + i, e);
 		}
 		

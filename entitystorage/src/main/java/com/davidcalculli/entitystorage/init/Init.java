@@ -1,6 +1,7 @@
 package com.davidcalculli.entitystorage.init;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,17 +13,15 @@ import org.apache.commons.lang.time.DateUtils;
 import com.davidcalculli.entitystorage.Domain;
 import com.davidcalculli.entitystorage.Entity;
 import com.davidcalculli.entitystorage.ComplexEntity;
-import com.davidcalculli.entitystorage.StringEntity;
 
 public class Init {
 	
-	public static void main(String[] args) throws IOException {
-		
+	public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
+								
 		InitHelper.runTest("data/d.1.alpha", 10);
 		InitHelper.runTest("data/d.2.alpha", 100);
 		InitHelper.runTest("data/d.3.alpha", 1000);
 		InitHelper.runTest("data/d.4.alpha", 10000);
-		
 		
 		
 		/*

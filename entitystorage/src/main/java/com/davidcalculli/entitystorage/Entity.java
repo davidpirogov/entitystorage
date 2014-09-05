@@ -11,13 +11,22 @@ public class Entity implements Serializable {
 	
 	public Entity() {
 		 elements = new HashMap<String, Entity>();
+		 
+		 // TODO Explore potential thread livelocks / deadlocks arising from
+		 //		 synchronized methods. Especially around accessing an Entity's
+		 //		 children by another thread. Shouldn't be much of an issue,
+		 //		 however it is in this class that investigation should begin.
+		 
+		 
+		 // TODO Re-write these methods to be MessagePack friendly
+		 //		 from doco in https://github.com/msgpack/msgpack-java/wiki/QuickStart 
 	}
 	
 	/**
 	 * Gets whether or not this Entity has any children
 	 * @return A {@link true} if there are registered children Entities
 	 */
-	public boolean hasChildren() {
+	public synchronized boolean hasChildren() {
 		return (this.elements.size() > 0);
 	}
 	
@@ -25,7 +34,7 @@ public class Entity implements Serializable {
 	 * Gets the set of keys that represent the first level children
 	 * @return A {@link Set<String>} of names of children keys or {@link Null} if there are no children
 	 */
-	public Set<String> getChildrenKeys() {
+	public synchronized Set<String> getChildrenKeys() {
 		if(this.hasChildren()) {
 			return this.elements.keySet();
 		}		
@@ -37,7 +46,7 @@ public class Entity implements Serializable {
 	 * @param childKey The name of the child entity
 	 * @return The child {@link Entity} or {@link Null} if an invalid key was supplied
 	 */
-	public Entity getChild(String childKey) {
+	public synchronized Entity getChild(String childKey) {
 		if(this.elements.containsKey(childKey)) {
 			return this.elements.get(childKey);
 		}
@@ -50,7 +59,7 @@ public class Entity implements Serializable {
 	 * @param child The unique value of the child of type {@link Entity}
 	 * @return The child {@link Entity} is passed back to the caller 
 	 */
-	public Entity addChild(String childKey, Entity child) {
+	public synchronized Entity addChild(String childKey, Entity child) {
 		if(this.elements.containsKey(childKey)) {
 			this.removeChild(childKey);
 		}
@@ -62,7 +71,7 @@ public class Entity implements Serializable {
 	 * Removes a child (and its children) from this entity and dereferences them. 
 	 * @param childKey The child key of the child object
 	 */
-	public void removeChild(String childKey) {
+	public synchronized void removeChild(String childKey) {
 		if(this.elements.containsKey(childKey)) {
 			this.elements.remove(childKey);
 		}
